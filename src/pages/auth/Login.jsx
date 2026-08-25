@@ -66,12 +66,6 @@ function Login() {
                 placeholder="••••••••"
                 {...register("password", {
                   required: "Password is required",
-                  pattern: {
-                    value:
-                      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
-                    message:
-                      "At least 8 characters, with letters, numbers and a special character",
-                  },
                 })}
                 className="w-full px-3 py-2 pr-10 rounded border border-border bg-bg text-text focus:outline-none focus:ring-2 focus:ring-primary"
               />

@@ -25,8 +25,7 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/verify-otp" element={<VerifyOtp />} />
         <Route path="/login" element={<Login />} />
-        // Protected route for candidate dashboard - only logged in users can
-        access this route
+        {/* Protected route for candidate dashboard - only logged in users can access this route */}
         <Route
           path="/candidate/dashboard"
           element={
