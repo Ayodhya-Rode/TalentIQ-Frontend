@@ -41,3 +41,10 @@ body {
 
 .font-display { font-family: var(--font-display); }
 .font-mono { font-family: var(--font-mono); }
+
+
+
+@keyframes pipeline-shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
