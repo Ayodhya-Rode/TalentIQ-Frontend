@@ -12,6 +12,7 @@ import Navbar from "./components/Navbar";
 import FeaturesPage from "./pages/FeaturesPage";
 import HowItWorksPage from "./pages/HowItWorksPage";
 import Home from "./pages/Home";
+import Footer from "./components/Footer";
 
 
 function ScrollToTop() {
@@ -62,6 +63,7 @@ function App() {
         <Route path="/features" element={<FeaturesPage />} />
         <Route path="/how-it-works" element={<HowItWorksPage />} />
       </Routes>
+      <Footer />
     </div>
   );
 }
