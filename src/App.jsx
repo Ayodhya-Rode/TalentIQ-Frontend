@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route , Navigate, useLocation } from "react-router-dom";
 import Register from "./pages/auth/Register";
 import VerifyOtp from "./pages/auth/VerifyOtp";
 import Login from "./pages/auth/Login";
@@ -8,6 +8,19 @@ import ForgotPassword from "./pages/auth/ForgotPassword";
 import ResetPassword from "./pages/auth/ResetPassword";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Profile from "./pages/candidate/Profile";
+import Navbar from "./components/Navbar";
+import FeaturesPage from "./pages/FeaturesPage";
+import HowItWorksPage from "./pages/HowItWorksPage";
+import Home from "./pages/Home";
+
+
+function ScrollToTop() {
+  const { pathname } = useLocation();
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+  return null;
+}
 
 function App() {
   const [dark, setDark] = useState(
@@ -20,8 +33,10 @@ function App() {
 
   return (
     <div className={dark ? "dark" : ""}>
+       <ScrollToTop />
+      <Navbar dark={dark} setDark={setDark} />
       <Routes>
-        <Route path="/" element={<Navigate to="/login" replace />} />
+        <Route path="/" element={<Home />} />
         <Route path="/register" element={<Register />} />
         <Route path="/verify-otp" element={<VerifyOtp />} />
         <Route path="/login" element={<Login />} />
@@ -44,6 +59,8 @@ function App() {
         />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="/features" element={<FeaturesPage />} />
+        <Route path="/how-it-works" element={<HowItWorksPage />} />
       </Routes>
     </div>
   );
