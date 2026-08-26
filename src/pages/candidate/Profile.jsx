@@ -89,6 +89,9 @@ function Profile() {
       education: [],
       certifications: [],
       projects: [],
+      portfolioUrl: "",
+      githubUrl: "",
+      linkedinUrl: "",
     },
   });
 
@@ -130,6 +133,9 @@ function Profile() {
             techStack: (p.techStack || []).join(", "),
             link: p.link || "",
           })),
+          portfolioUrl: profile.portfolioUrl || "",
+          githubUrl: profile.githubUrl || "",
+          linkedinUrl: profile.linkedinUrl || "",
         });
       } catch (err) {
         setServerError("Failed to load profile");
@@ -190,6 +196,9 @@ function Profile() {
         education: data.education,
         certifications: data.certifications,
         projects: data.projects,
+        portfolioUrl: data.portfolioUrl,
+        githubUrl: data.githubUrl,
+        linkedinUrl: data.linkedinUrl,
       });
 
       setSuccessMsg("Profile updated successfully");
@@ -449,6 +458,7 @@ function Profile() {
                       <input
                         type="number"
                         {...register(`education.${index}.startYear`, {
+                          required: "Start year is required",
                           valueAsNumber: true,
                           min: { value: 1950, message: "Enter a valid year" },
                           max: { value: 2035, message: "Enter a valid year" },
@@ -495,6 +505,77 @@ function Profile() {
               >
                 <Plus size={15} /> Add education
               </button>
+            </div>
+          </AccordionSection>
+
+          {/* Links */}
+          <AccordionSection
+            title="Links"
+            subtitle="Portfolio, GitHub, and LinkedIn (optional)"
+          >
+            <div className="grid sm:grid-cols-3 gap-4">
+              <div>
+                <label className={labelClass}>Portfolio URL</label>
+                <input
+                  type="url"
+                  placeholder="https://yourportfolio.com"
+                  {...register("portfolioUrl", {
+                    pattern: {
+                      value: /^https?:\/\/.+\.+/,
+                      message:
+                        "Enter a valid URL (starting with http:// or https://)",
+                    },
+                  })}
+                  className={inputClass}
+                />
+                {errors.portfolioUrl && (
+                  <p className="text-danger text-xs mt-1">
+                    {errors.portfolioUrl.message}
+                  </p>
+                )}
+              </div>
+
+              <div>
+                <label className={labelClass}>GitHub URL</label>
+                <input
+                  type="url"
+                  placeholder="https://github.com/username"
+                  {...register("githubUrl", {
+                    pattern: {
+                      value: /^https?:\/\/.+\.+/,
+                      message:
+                        "Enter a valid URL (starting with http:// or https://)",
+                    },
+                  })}
+                  className={inputClass}
+                />
+                {errors.githubUrl && (
+                  <p className="text-danger text-xs mt-1">
+                    {errors.githubUrl.message}
+                  </p>
+                )}
+              </div>
+
+              <div>
+                <label className={labelClass}>LinkedIn URL</label>
+                <input
+                  type="url"
+                  placeholder="https://linkedin.com/in/username"
+                  {...register("linkedinUrl", {
+                    pattern: {
+                      value: /^https?:\/\/.+\.+/,
+                      message:
+                        "Enter a valid URL (starting with http:// or https://)",
+                    },
+                  })}
+                  className={inputClass}
+                />
+                {errors.linkedinUrl && (
+                  <p className="text-danger text-xs mt-1">
+                    {errors.linkedinUrl.message}
+                  </p>
+                )}
+              </div>
             </div>
           </AccordionSection>
 
