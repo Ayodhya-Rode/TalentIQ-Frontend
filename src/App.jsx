@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Routes, Route , Navigate, useLocation } from "react-router-dom";
+import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import Register from "./pages/auth/Register";
 import VerifyOtp from "./pages/auth/VerifyOtp";
 import Login from "./pages/auth/Login";
@@ -14,13 +14,20 @@ import HowItWorksPage from "./pages/HowItWorksPage";
 import Home from "./pages/Home";
 import Footer from "./components/Footer";
 
-
 function ScrollToTop() {
   const { pathname } = useLocation();
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [pathname]);
   return null;
+}
+
+// Routes where the marketing Navbar/Footer should NOT be shown
+const NO_NAV_FOOTER_ROUTES = ["/candidate/dashboard", "/candidate/profile"];
+
+function useShowNavAndFooter() {
+  const { pathname } = useLocation();
+  return !NO_NAV_FOOTER_ROUTES.includes(pathname);
 }
 
 function App() {
@@ -32,10 +39,13 @@ function App() {
     localStorage.setItem("theme", dark ? "dark" : "light");
   }, [dark]);
 
+  const showNavAndFooter = useShowNavAndFooter();
+
   return (
     <div className={dark ? "dark" : ""}>
-       <ScrollToTop />
-      <Navbar dark={dark} setDark={setDark} />
+      <ScrollToTop />
+      {showNavAndFooter && <Navbar dark={dark} setDark={setDark} />}
+      
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/register" element={<Register />} />
@@ -63,7 +73,7 @@ function App() {
         <Route path="/features" element={<FeaturesPage />} />
         <Route path="/how-it-works" element={<HowItWorksPage />} />
       </Routes>
-      <Footer />
+      {showNavAndFooter && <Footer />}
     </div>
   );
 }
