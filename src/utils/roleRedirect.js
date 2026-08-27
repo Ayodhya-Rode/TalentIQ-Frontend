@@ -3,6 +3,8 @@ export const redirectForRole = (user, navigate) => {
     navigate("/candidate/dashboard");
   } else if (user.role === "SUPER_ADMIN") {
     navigate("/super-admin/dashboard");
+  } else if (user.role === "ORG_ADMIN") {
+    navigate("/org-admin");
   } else {
     navigate("/");
   }

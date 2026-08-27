@@ -16,6 +16,8 @@ import Footer from "./components/Footer";
 import ResumeGenerator from "./pages/candidate/ResumeGenerator";
 import SuperAdminDashboard from "./pages/super-admin/SuperAdminDashboard";
 import OrganizationDetail from "./pages/super-admin/OrganizationDetail";
+import OrgAdminHome from "./pages/org-admin/OrgAdminHome";
+import OrgAdminOrganization from "./pages/org-admin/OrgAdminDashboard";
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -26,10 +28,7 @@ function ScrollToTop() {
 }
 
 // Routes where the marketing Navbar/Footer should NOT be shown
-const NO_NAV_FOOTER_ROUTES = [
-  "/candidate",
-  "/super-admin",
-];
+const NO_NAV_FOOTER_ROUTES = ["/candidate", "/super-admin", "/org-admin"];
 
 function useShowNavAndFooter() {
   const { pathname } = useLocation();
@@ -90,7 +89,7 @@ function App() {
           path="/super-admin/dashboard"
           element={
             <ProtectedRoute>
-             <SuperAdminDashboard dark={dark} setDark={setDark} />
+              <SuperAdminDashboard dark={dark} setDark={setDark} />
             </ProtectedRoute>
           }
         />
@@ -100,6 +99,23 @@ function App() {
           element={
             <ProtectedRoute>
               <OrganizationDetail />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/org-admin"
+          element={
+            <ProtectedRoute allowedRoles={["ORG_ADMIN"]}>
+              <OrgAdminHome />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/org-admin/organization"
+          element={
+            <ProtectedRoute allowedRoles={["ORG_ADMIN"]}>
+              <OrgAdminOrganization />
             </ProtectedRoute>
           }
         />

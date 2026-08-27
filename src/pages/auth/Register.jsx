@@ -8,6 +8,7 @@ function Register() {
   const navigate = useNavigate();
   const [serverError, setServerError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [role, setRole] = useState("CANDIDATE");
 
   const {
     register,
@@ -20,7 +21,7 @@ function Register() {
   const onSubmit = async (data) => {
     setServerError("");
     try {
-      await registerUser({ ...data, role: "CANDIDATE" });
+      await registerUser({ ...data, role });
       navigate("/verify-otp", { state: { email: data.email } });
     } catch (err) {
       setServerError(err?.response?.data?.message || "Registration failed");
@@ -38,6 +39,33 @@ function Register() {
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           {serverError && <p className="text-danger text-sm">{serverError}</p>}
 
+          <div>
+            <label className="block text-sm mb-1">I am registering as</label>
+            <div className="grid grid-cols-2 gap-2">
+              <button
+                type="button"
+                onClick={() => setRole("CANDIDATE")}
+                className={`py-2 rounded border text-sm font-medium transition-colors ${
+                  role === "CANDIDATE"
+                    ? "bg-primary text-white border-primary"
+                    : "border-border text-text-muted hover:text-text"
+                }`}
+              >
+                Candidate
+              </button>
+              <button
+                type="button"
+                onClick={() => setRole("ORG_ADMIN")}
+                className={`py-2 rounded border text-sm font-medium transition-colors ${
+                  role === "ORG_ADMIN"
+                    ? "bg-primary text-white border-primary"
+                    : "border-border text-text-muted hover:text-text"
+                }`}
+              >
+                Organization Admin
+              </button>
+            </div>
+          </div>
           <div>
             <label className="block text-sm mb-1">Email</label>
             <input
