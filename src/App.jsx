@@ -13,6 +13,7 @@ import FeaturesPage from "./pages/FeaturesPage";
 import HowItWorksPage from "./pages/HowItWorksPage";
 import Home from "./pages/Home";
 import Footer from "./components/Footer";
+import ResumeGenerator from "./pages/candidate/ResumeGenerator";
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -23,7 +24,7 @@ function ScrollToTop() {
 }
 
 // Routes where the marketing Navbar/Footer should NOT be shown
-const NO_NAV_FOOTER_ROUTES = ["/candidate/dashboard", "/candidate/profile"];
+const NO_NAV_FOOTER_ROUTES = ["/candidate/dashboard", "/candidate/profile", "/candidate/resume-generator"];
 
 function useShowNavAndFooter() {
   const { pathname } = useLocation();
@@ -45,7 +46,7 @@ function App() {
     <div className={dark ? "dark" : ""}>
       <ScrollToTop />
       {showNavAndFooter && <Navbar dark={dark} setDark={setDark} />}
-      
+
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/register" element={<Register />} />
@@ -72,6 +73,14 @@ function App() {
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/features" element={<FeaturesPage />} />
         <Route path="/how-it-works" element={<HowItWorksPage />} />
+        <Route
+          path="/candidate/resume-generator"
+          element={
+            <ProtectedRoute>
+              <ResumeGenerator />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
       {showNavAndFooter && <Footer />}
     </div>

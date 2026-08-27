@@ -1,12 +1,14 @@
 import { Sparkles, Pencil, LogOut } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 function DashboardActions({ onEditProfile, onLogout }) {
+  const navigate = useNavigate();
+
   return (
     <div className="flex flex-col sm:flex-row lg:flex-col gap-2 w-full lg:w-48 flex-shrink-0">
       {/* AI Resume Generator */}
       <button
-        disabled
-        title="Coming soon"
+        onClick={() => navigate("/candidate/resume-generator")}
         className="
           inline-flex items-center justify-center gap-2
           w-full
@@ -15,8 +17,9 @@ function DashboardActions({ onEditProfile, onLogout }) {
           bg-primary/10
           text-primary
           text-sm font-semibold
-          opacity-70
-          cursor-not-allowed
+        hover:bg-primary/20
+          cursor-pointer
+          transition-colors
         "
       >
         <Sparkles size={16} />
