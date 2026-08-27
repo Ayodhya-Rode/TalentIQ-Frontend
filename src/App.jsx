@@ -14,6 +14,8 @@ import HowItWorksPage from "./pages/HowItWorksPage";
 import Home from "./pages/Home";
 import Footer from "./components/Footer";
 import ResumeGenerator from "./pages/candidate/ResumeGenerator";
+import SuperAdminDashboard from "./pages/super-admin/SuperAdminDashboard";
+import OrganizationDetail from "./pages/super-admin/OrganizationDetail";
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -24,11 +26,14 @@ function ScrollToTop() {
 }
 
 // Routes where the marketing Navbar/Footer should NOT be shown
-const NO_NAV_FOOTER_ROUTES = ["/candidate/dashboard", "/candidate/profile", "/candidate/resume-generator"];
+const NO_NAV_FOOTER_ROUTES = [
+  "/candidate",
+  "/super-admin",
+];
 
 function useShowNavAndFooter() {
   const { pathname } = useLocation();
-  return !NO_NAV_FOOTER_ROUTES.includes(pathname);
+  return !NO_NAV_FOOTER_ROUTES.some((prefix) => pathname.startsWith(prefix));
 }
 
 function App() {
@@ -78,6 +83,23 @@ function App() {
           element={
             <ProtectedRoute>
               <ResumeGenerator />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/super-admin/dashboard"
+          element={
+            <ProtectedRoute>
+             <SuperAdminDashboard dark={dark} setDark={setDark} />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/super-admin/organizations/:id"
+          element={
+            <ProtectedRoute>
+              <OrganizationDetail />
             </ProtectedRoute>
           }
         />
