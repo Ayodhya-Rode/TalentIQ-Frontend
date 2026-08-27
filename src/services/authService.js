@@ -13,3 +13,7 @@ export const logoutUser = () => api.post("/auth/logout");
 export const forgotPassword = (data) => api.post("/auth/forgot-password", data);
 
 export const resetPassword = (data) => api.post("/auth/reset-password", data);
+
+export const verifyInvite = (token) => api.get(`/organizations/verify-invite?token=${token}`);
+
+export const acceptInvite = (data) => api.post("/organizations/accept-invite", data);

@@ -18,6 +18,7 @@ import SuperAdminDashboard from "./pages/super-admin/SuperAdminDashboard";
 import OrganizationDetail from "./pages/super-admin/OrganizationDetail";
 import OrgAdminHome from "./pages/org-admin/OrgAdminHome";
 import OrgAdminOrganization from "./pages/org-admin/OrgAdminDashboard";
+import AcceptInvite from "./pages/auth/AcceptInvite";
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -60,7 +61,7 @@ function App() {
         <Route
           path="/candidate/dashboard"
           element={
-            <ProtectedRoute>
+            <ProtectedRoute allowedRoles={["CANDIDATE"]}>
               <Dashboard />
             </ProtectedRoute>
           }
@@ -68,19 +69,20 @@ function App() {
         <Route
           path="/candidate/profile"
           element={
-            <ProtectedRoute>
+            <ProtectedRoute allowedRoles={["CANDIDATE"]}>
               <Profile />
             </ProtectedRoute>
           }
         />
         <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/accept-invite" element={<AcceptInvite />} />
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/features" element={<FeaturesPage />} />
         <Route path="/how-it-works" element={<HowItWorksPage />} />
         <Route
           path="/candidate/resume-generator"
           element={
-            <ProtectedRoute>
+            <ProtectedRoute allowedRoles={["CANDIDATE"]}>
               <ResumeGenerator />
             </ProtectedRoute>
           }

@@ -5,6 +5,7 @@ import {
   registerOrganization,
   updateOrganization,
   deleteOrganization,
+  inviteTeamMember
 } from "../../services/orgAdminService";
 import { useAuth } from "../../context/AuthContext";
 import OrgFormModal from "../../components/OrgFormModal";
@@ -21,7 +22,9 @@ import {
   Mail,
   Briefcase,
   ArrowLeft,
+  UserPlus,
 } from "lucide-react";
+import TeamMemberFormModal from "../../components/TeamMemberFormModal";
 
 const statusStyles = {
   PENDING: "bg-warning/10 text-warning",
@@ -46,6 +49,7 @@ function OrgAdminDashboard() {
   const [viewOpen, setViewOpen] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [error, setError] = useState("");
+  const [inviteOpen, setInviteOpen] = useState(false);
   const navigate = useNavigate();
   const { user, logout } = useAuth();
 
@@ -107,6 +111,11 @@ function OrgAdminDashboard() {
     }
   };
 
+  const handleInviteSubmit = async (data) => {
+    await inviteTeamMember(data);
+    setInviteOpen(false);
+  };
+
   return (
     <div className="min-h-screen bg-bg text-text p-6">
       <div className="max-w-3xl mx-auto">
@@ -137,7 +146,8 @@ function OrgAdminDashboard() {
             <Building2 size={32} className="mx-auto mb-3 text-text-muted" />
             <p className="font-semibold mb-1">No organization registered yet</p>
             <p className="text-text-muted text-sm mb-5">
-              Register your organization to get started. It'll be reviewed by our team before you get full access.
+              Register your organization to get started. It'll be reviewed by
+              our team before you get full access.
             </p>
             <button
               onClick={openCreate}
@@ -155,14 +165,20 @@ function OrgAdminDashboard() {
               <div className="flex items-center gap-4 min-w-0">
                 <div className="w-14 h-14 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0 overflow-hidden">
                   {org.logo ? (
-                    <img src={org.logo} alt={org.name} className="w-full h-full object-cover" />
+                    <img
+                      src={org.logo}
+                      alt={org.name}
+                      className="w-full h-full object-cover"
+                    />
                   ) : (
                     <Building2 size={22} className="text-primary" />
                   )}
                 </div>
                 <div className="min-w-0">
                   <p className="font-semibold text-lg truncate">{org.name}</p>
-                  <p className="text-sm text-text-muted truncate">{org.industry}</p>
+                  <p className="text-sm text-text-muted truncate">
+                    {org.industry}
+                  </p>
                 </div>
               </div>
               <span
@@ -176,17 +192,20 @@ function OrgAdminDashboard() {
 
             {org.status === "PENDING" && (
               <p className="text-sm text-warning bg-warning/10 rounded-lg px-3 py-2 mb-6">
-                Your organization is awaiting approval. Some features will unlock once approved.
+                Your organization is awaiting approval. Some features will
+                unlock once approved.
               </p>
             )}
             {org.status === "REJECTED" && (
               <p className="text-sm text-danger bg-danger/10 rounded-lg px-3 py-2 mb-6">
-                Your registration was rejected. Edit the details to resubmit, or delete and start over.
+                Your registration was rejected. Edit the details to resubmit, or
+                delete and start over.
               </p>
             )}
             {org.status === "SUSPENDED" && (
               <p className="text-sm text-danger bg-danger/10 rounded-lg px-3 py-2 mb-6">
-                Your organization access is suspended. Contact support for details.
+                Your organization access is suspended. Contact support for
+                details.
               </p>
             )}
 
@@ -226,23 +245,33 @@ function OrgAdminDashboard() {
                   <div className="rounded-lg border border-border p-3">
                     <Calendar size={16} className="text-primary mb-2" />
                     <p className="text-xs text-text-muted">Registered</p>
-                    <p className="text-sm font-semibold">{daysSince(org.createdAt)}</p>
+                    <p className="text-sm font-semibold">
+                      {daysSince(org.createdAt)}
+                    </p>
                   </div>
                   <div className="rounded-lg border border-border p-3">
                     <Briefcase size={16} className="text-primary mb-2" />
                     <p className="text-xs text-text-muted">Industry</p>
-                    <p className="text-sm font-semibold truncate">{org.industry}</p>
+                    <p className="text-sm font-semibold truncate">
+                      {org.industry}
+                    </p>
                   </div>
                   <div className="rounded-lg border border-border p-3">
                     <Mail size={16} className="text-primary mb-2" />
                     <p className="text-xs text-text-muted">Admin</p>
-                    <p className="text-sm font-semibold truncate">{user?.email}</p>
+                    <p className="text-sm font-semibold truncate">
+                      {user?.email}
+                    </p>
                   </div>
                 </div>
 
-                <div className="rounded-lg border border-dashed border-border p-4 text-sm text-text-muted">
-                  Job postings, recruiter invites, and candidate pipelines aren't built yet — this is where they'll show up next.
-                </div>
+                <button
+                  onClick={() => setInviteOpen(true)}
+                  className="inline-flex items-center gap-2 bg-primary hover:bg-primary-hover text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors"
+                >
+                  <UserPlus size={16} />
+                  Invite Recruiter / Interviewer
+                </button>
               </div>
             )}
           </div>
@@ -287,11 +316,19 @@ function OrgAdminDashboard() {
               </div>
               <div>
                 <p className="text-text-muted">Registered on</p>
-                <p className="font-medium">{new Date(org.createdAt).toLocaleDateString()}</p>
+                <p className="font-medium">
+                  {new Date(org.createdAt).toLocaleDateString()}
+                </p>
               </div>
             </div>
           </div>
         </div>
+      )}
+      {inviteOpen && (
+        <TeamMemberFormModal
+          onSubmit={handleInviteSubmit}
+          onClose={() => setInviteOpen(false)}
+        />
       )}
     </div>
   );

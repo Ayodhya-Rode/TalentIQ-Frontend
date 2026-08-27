@@ -7,3 +7,5 @@ export const registerOrganization = (formData) =>
 
 export const updateOrganization = (formData) => api.patch("/organizations/my-organization", formData);
 export const deleteOrganization = () => api.delete("/organizations/my-organization");
+
+export const inviteTeamMember = (data) => api.post("/organizations/team-members", data);
