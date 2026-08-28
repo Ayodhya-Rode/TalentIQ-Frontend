@@ -21,6 +21,8 @@ import OrgAdminOrganization from "./pages/org-admin/OrgAdminDashboard";
 import AcceptInvite from "./pages/auth/AcceptInvite";
 import RecruiterDashboard from "./pages/recruiter/RecruiterDashboard";
 import InterviewerDashboard from "./pages/interviewer/InterviewerDashboard";
+import Jobs from "./pages/Jobs";
+
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -80,6 +82,7 @@ function App() {
         <Route path="/accept-invite" element={<AcceptInvite />} />
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/features" element={<FeaturesPage />} />
+        <Route path="/jobs" element={<Jobs />} />
         <Route path="/how-it-works" element={<HowItWorksPage />} />
         <Route
           path="/candidate/resume-generator"
@@ -92,7 +95,7 @@ function App() {
         <Route
           path="/super-admin/dashboard"
           element={
-            <ProtectedRoute>
+            <ProtectedRoute allowedRoles={["SUPER_ADMIN"]}>
               <SuperAdminDashboard dark={dark} setDark={setDark} />
             </ProtectedRoute>
           }
@@ -101,7 +104,7 @@ function App() {
         <Route
           path="/super-admin/organizations/:id"
           element={
-            <ProtectedRoute>
+            <ProtectedRoute allowedRoles={["SUPER_ADMIN"]}>
               <OrganizationDetail />
             </ProtectedRoute>
           }

@@ -27,6 +27,7 @@ function Navbar({ dark, setDark }) {
             { to: "/features", label: "Features" },
             { to: "/how-it-works", label: "How it works" },
             { to: "#roles", label: "For teams" },
+            { to: "/jobs", label: "Jobs" },
           ].map((item) => (
             <Link
               key={item.to}

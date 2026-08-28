@@ -2,7 +2,8 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { getMyMembership } from "../../services/teamMemberService";
 import { useAuth } from "../../context/AuthContext";
-import { Building2, LogOut, Briefcase, Users } from "lucide-react";
+import { Building2, LogOut, Users } from "lucide-react";
+import RecruiterJobsList from "../../components/RecruiterJobsList";
 
 function RecruiterDashboard() {
   const [org, setOrg] = useState(null);
@@ -48,25 +49,28 @@ function RecruiterDashboard() {
             <div className="flex items-center gap-4">
               <div className="w-14 h-14 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0 overflow-hidden">
                 {org.logo ? (
-                  <img src={org.logo} alt={org.name} className="w-full h-full object-cover" />
+                  <img
+                    src={org.logo}
+                    alt={org.name}
+                    className="w-full h-full object-cover"
+                  />
                 ) : (
                   <Building2 size={22} className="text-primary" />
                 )}
               </div>
               <div>
                 <p className="font-semibold text-lg">{org.name}</p>
-                <p className="text-sm text-text-muted">{org.industry} · Recruiter</p>
+                <p className="text-sm text-text-muted">
+                  {org.industry} · Recruiter
+                </p>
               </div>
             </div>
           </div>
         )}
 
-        <div className="grid sm:grid-cols-2 gap-4">
-          <div className="rounded-lg border border-dashed border-border p-6 text-center">
-            <Briefcase size={22} className="mx-auto mb-2 text-text-muted" />
-            <p className="font-semibold mb-1">Job Postings</p>
-            <p className="text-text-muted text-sm">Coming soon</p>
-          </div>
+        <div className="space-y-6">
+          <RecruiterJobsList />
+
           <div className="rounded-lg border border-dashed border-border p-6 text-center">
             <Users size={22} className="mx-auto mb-2 text-text-muted" />
             <p className="font-semibold mb-1">Candidates & Interviews</p>

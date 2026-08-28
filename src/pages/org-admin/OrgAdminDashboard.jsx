@@ -26,6 +26,7 @@ import {
 } from "lucide-react";
 import TeamMemberFormModal from "../../components/TeamMemberFormModal";
 import TeamMembersList from "../../components/TeamMembersList";
+import PendingJobsQueue from "../../components/PendingJobsQueue";
 
 const statusStyles = {
   PENDING: "bg-warning/10 text-warning",
@@ -276,6 +277,10 @@ function OrgAdminDashboard() {
                 <div className="mt-6">
                   <h3 className="text-sm font-semibold mb-3">Team</h3>
                   <TeamMembersList />
+                </div>
+                <div className="mt-6">
+                  <h3 className="text-sm font-semibold mb-3">Pending Job Approvals</h3>
+                  <PendingJobsQueue />
                 </div>
               </div>
             )}
