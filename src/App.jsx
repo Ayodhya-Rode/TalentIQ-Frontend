@@ -19,6 +19,8 @@ import OrganizationDetail from "./pages/super-admin/OrganizationDetail";
 import OrgAdminHome from "./pages/org-admin/OrgAdminHome";
 import OrgAdminOrganization from "./pages/org-admin/OrgAdminDashboard";
 import AcceptInvite from "./pages/auth/AcceptInvite";
+import RecruiterDashboard from "./pages/recruiter/RecruiterDashboard";
+import InterviewerDashboard from "./pages/interviewer/InterviewerDashboard";
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -29,7 +31,7 @@ function ScrollToTop() {
 }
 
 // Routes where the marketing Navbar/Footer should NOT be shown
-const NO_NAV_FOOTER_ROUTES = ["/candidate", "/super-admin", "/org-admin"];
+const NO_NAV_FOOTER_ROUTES = ["/candidate", "/super-admin", "/org-admin","/recruiter","/interviewer"];
 
 function useShowNavAndFooter() {
   const { pathname } = useLocation();
@@ -121,6 +123,24 @@ function App() {
             </ProtectedRoute>
           }
         />
+
+        <Route
+          path="/recruiter/dashboard"
+          element={
+            <ProtectedRoute allowedRoles={["RECRUITER"]}>
+              <RecruiterDashboard />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+  path="/interviewer/dashboard"
+  element={
+    <ProtectedRoute allowedRoles={["INTERVIEWER"]}>
+      <InterviewerDashboard />
+    </ProtectedRoute>
+  }
+/>
       </Routes>
       {showNavAndFooter && <Footer />}
     </div>
