@@ -5,7 +5,7 @@ import {
   registerOrganization,
   updateOrganization,
   deleteOrganization,
-  inviteTeamMember
+  inviteTeamMember,
 } from "../../services/orgAdminService";
 import { useAuth } from "../../context/AuthContext";
 import OrgFormModal from "../../components/OrgFormModal";
@@ -25,6 +25,7 @@ import {
   UserPlus,
 } from "lucide-react";
 import TeamMemberFormModal from "../../components/TeamMemberFormModal";
+import TeamMembersList from "../../components/TeamMembersList";
 
 const statusStyles = {
   PENDING: "bg-warning/10 text-warning",
@@ -272,6 +273,10 @@ function OrgAdminDashboard() {
                   <UserPlus size={16} />
                   Invite Recruiter / Interviewer
                 </button>
+                <div className="mt-6">
+                  <h3 className="text-sm font-semibold mb-3">Team</h3>
+                  <TeamMembersList />
+                </div>
               </div>
             )}
           </div>

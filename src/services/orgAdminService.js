@@ -9,3 +9,7 @@ export const updateOrganization = (formData) => api.patch("/organizations/my-org
 export const deleteOrganization = () => api.delete("/organizations/my-organization");
 
 export const inviteTeamMember = (data) => api.post("/organizations/team-members", data);
+
+export const getTeamMembers = () => api.get("/organizations/team-members");
+export const deactivateTeamMember = (id) => api.patch(`/organizations/team-members/${id}/deactivate`);
+export const activateTeamMember = (id) => api.patch(`/organizations/team-members/${id}/activate`);
