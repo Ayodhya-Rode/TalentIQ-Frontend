@@ -22,7 +22,7 @@ import AcceptInvite from "./pages/auth/AcceptInvite";
 import RecruiterDashboard from "./pages/recruiter/RecruiterDashboard";
 import InterviewerDashboard from "./pages/interviewer/InterviewerDashboard";
 import Jobs from "./pages/Jobs";
-
+import MyApplications from "./pages/candidate/MyApplications";
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -33,7 +33,13 @@ function ScrollToTop() {
 }
 
 // Routes where the marketing Navbar/Footer should NOT be shown
-const NO_NAV_FOOTER_ROUTES = ["/candidate", "/super-admin", "/org-admin","/recruiter","/interviewer"];
+const NO_NAV_FOOTER_ROUTES = [
+  "/candidate",
+  "/super-admin",
+  "/org-admin",
+  "/recruiter",
+  "/interviewer",
+];
 
 function useShowNavAndFooter() {
   const { pathname } = useLocation();
@@ -75,6 +81,14 @@ function App() {
           element={
             <ProtectedRoute allowedRoles={["CANDIDATE"]}>
               <Profile />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/candidate/applications"
+          element={
+            <ProtectedRoute allowedRoles={["CANDIDATE"]}>
+              <MyApplications />
             </ProtectedRoute>
           }
         />
@@ -137,13 +151,13 @@ function App() {
         />
 
         <Route
-  path="/interviewer/dashboard"
-  element={
-    <ProtectedRoute allowedRoles={["INTERVIEWER"]}>
-      <InterviewerDashboard />
-    </ProtectedRoute>
-  }
-/>
+          path="/interviewer/dashboard"
+          element={
+            <ProtectedRoute allowedRoles={["INTERVIEWER"]}>
+              <InterviewerDashboard />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
       {showNavAndFooter && <Footer />}
     </div>

@@ -1,7 +1,13 @@
 import { useState, useEffect } from "react";
-import { getMyJobs, createJob, updateJob, closeJob } from "../services/jobService";
+import {
+  getMyJobs,
+  createJob,
+  updateJob,
+  closeJob,
+} from "../services/jobService";
 import JobFormModal from "./JobFormModal";
-import { Plus, Pencil, XCircle, Briefcase } from "lucide-react";
+import { Plus, Pencil, XCircle, Briefcase, Users } from "lucide-react";
+import JobApplicantsModal from "./JobApplicantsModal";
 
 const statusStyles = {
   PENDING_APPROVAL: "bg-warning/10 text-warning",
@@ -25,6 +31,7 @@ function RecruiterJobsList() {
   const [formMode, setFormMode] = useState("create");
   const [editingJob, setEditingJob] = useState(null);
   const [closingId, setClosingId] = useState(null);
+  const [viewingApplicantsJob, setViewingApplicantsJob] = useState(null);
 
   const fetchJobs = async () => {
     setLoading(true);
@@ -65,7 +72,12 @@ function RecruiterJobsList() {
   };
 
   const handleClose = async (job) => {
-    if (!window.confirm(`Close "${job.title}"? It'll no longer be visible to candidates.`)) return;
+    if (
+      !window.confirm(
+        `Close "${job.title}"? It'll no longer be visible to candidates.`,
+      )
+    )
+      return;
     setClosingId(job.id);
     try {
       await closeJob(job.id);
@@ -102,18 +114,26 @@ function RecruiterJobsList() {
 
       <div className="space-y-2">
         {jobs.map((job) => (
-          <div key={job.id} className="border border-border rounded-lg px-4 py-3">
+          <div
+            key={job.id}
+            className="border border-border rounded-lg px-4 py-3"
+          >
             <div className="flex items-start justify-between gap-3">
               <div className="min-w-0">
                 <p className="font-medium text-sm truncate">{job.title}</p>
                 <p className="text-xs text-text-muted">
-                  {job.department} · {job.location || "No location"} {job.isRemote && "· Remote"}
+                  {job.department} · {job.location || "No location"}{" "}
+                  {job.isRemote && "· Remote"}
                 </p>
                 {job.status === "REJECTED" && job.rejectionReason && (
-                  <p className="text-xs text-danger mt-1">Reason: {job.rejectionReason}</p>
+                  <p className="text-xs text-danger mt-1">
+                    Reason: {job.rejectionReason}
+                  </p>
                 )}
               </div>
-              <span className={`text-xs font-semibold px-2 py-1 rounded-full flex-shrink-0 ${statusStyles[job.status]}`}>
+              <span
+                className={`text-xs font-semibold px-2 py-1 rounded-full flex-shrink-0 ${statusStyles[job.status]}`}
+              >
                 {statusLabel[job.status]}
               </span>
             </div>
@@ -137,6 +157,13 @@ function RecruiterJobsList() {
                 </button>
               </div>
             )}
+            <button
+    onClick={() => setViewingApplicantsJob(job)}
+    className="inline-flex items-center gap-1 text-xs border border-border px-2.5 py-1.5 rounded-md hover:bg-bg transition-colors"
+  >
+    <Users size={12} />
+    Applicants
+  </button>
           </div>
         ))}
       </div>
@@ -147,6 +174,12 @@ function RecruiterJobsList() {
           initialData={editingJob}
           onSubmit={handleFormSubmit}
           onClose={() => setFormOpen(false)}
+        />
+      )}
+      {viewingApplicantsJob && (
+        <JobApplicantsModal
+          job={viewingApplicantsJob}
+          onClose={() => setViewingApplicantsJob(null)}
         />
       )}
     </div>

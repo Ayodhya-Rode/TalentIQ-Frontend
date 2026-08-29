@@ -1,17 +1,18 @@
-// components/Navbar.jsx
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Sun, Moon, Menu, X } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
+import { redirectForRole } from "../utils/roleRedirect";
 
 function Navbar({ dark, setDark }) {
   const { user, logout } = useAuth();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const navigate = useNavigate();
 
   return (
     <nav className="sticky top-0 z-50 border-b border-border bg-surface/90 backdrop-blur-md">
       <div className="max-w-6xl mx-auto px-6 flex items-center justify-between h-16">
-        
         {/* Logo */}
         <Link
           to="/"
@@ -52,12 +53,12 @@ function Navbar({ dark, setDark }) {
 
           {user ? (
             <>
-              <Link
-                to="/candidate/dashboard"
+              <button
+                onClick={() => redirectForRole(user, navigate)}
                 className="text-sm font-semibold text-text hover:text-primary transition-colors"
               >
                 Dashboard
-              </Link>
+              </button>
 
               <button
                 onClick={logout}
@@ -119,7 +120,7 @@ function Navbar({ dark, setDark }) {
             className="text-sm font-medium text-text"
           >
             How it works
-          </Link    >
+          </Link>
 
           <Link
             to="/roles"
@@ -139,13 +140,15 @@ function Navbar({ dark, setDark }) {
 
           {user ? (
             <>
-              <Link
-                to="/candidate/dashboard"
-                onClick={() => setMobileOpen(false)}
-                className="text-sm font-semibold text-text"
+              <button
+                onClick={() => {
+                  redirectForRole(user, navigate);
+                  setMobileOpen(false);
+                }}
+                className="text-sm font-semibold text-text text-left"
               >
                 Dashboard
-              </Link>
+              </button>
 
               <button
                 onClick={logout}
