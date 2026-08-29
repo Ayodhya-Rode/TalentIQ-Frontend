@@ -4,7 +4,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { getMyProfile } from "../../services/candidateService";
 import DashboardActions from "../../components/DashboardActions";
 import { ArrowLeft } from "lucide-react";
-
+import ResumeViewerModal from "../../components/ResumeViewerModal";
 import { Mail, Phone, MapPin } from "lucide-react";
 
 function getInitials(name) {
@@ -23,6 +23,7 @@ function Dashboard() {
 
   const [profile, setProfile] = useState(null);
   const [loadingProfile, setLoadingProfile] = useState(true);
+  const [viewingResume, setViewingResume] = useState(false);
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -56,13 +57,21 @@ function Dashboard() {
     <div className="min-h-screen bg-bg text-text">
       {/* ================= PROFILE HEADER ================= */}
       <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-10">
-        <Link
-          to="/"
-          className="mb-4 inline-flex items-center gap-2 text-sm text-text-muted hover:text-text transition-colors"
-        >
-          <ArrowLeft size={16} />
-          Back to Home
-        </Link>
+        <div className="flex items-center justify-between gap-4 mb-4 flex-wrap">
+          <Link
+            to="/"
+            className="mb-4 inline-flex items-center gap-2 text-sm text-text-muted hover:text-text transition-colors"
+          >
+            <ArrowLeft size={16} />
+            Back to Home
+          </Link>
+          <Link
+            to="/candidate/applications"
+            className="text-sm font-semibold text-primary hover:underline"
+          >
+            My Applications →
+          </Link>
+        </div>
 
         <section className="rounded-2xl border border-border bg-surface px-5 py-6 md:px-8 md:py-7">
           <div className="flex flex-col lg:flex-row lg:items-center gap-7">
@@ -159,14 +168,12 @@ function Dashboard() {
               </h2>
 
               {profile.resumeUrl ? (
-                <a
-                  href={profile.resumeUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <button
+                  onClick={() => setViewingResume(true)}
                   className="text-sm font-semibold text-primary hover:underline"
                 >
                   View uploaded resume →
-                </a>
+                </button>
               ) : (
                 <p className="text-sm text-text-muted">
                   No resume uploaded yet.
@@ -292,6 +299,12 @@ function Dashboard() {
           </div>
         )}
       </main>
+      {viewingResume && (
+        <ResumeViewerModal
+          resumeUrl={profile.resumeUrl}
+          onClose={() => setViewingResume(false)}
+        />
+      )}
     </div>
   );
 }
