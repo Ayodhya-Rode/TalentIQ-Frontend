@@ -4,6 +4,8 @@ import { getMyMembership } from "../../services/teamMemberService";
 import { useAuth } from "../../context/AuthContext";
 import { Building2, LogOut, Users } from "lucide-react";
 import RecruiterJobsList from "../../components/RecruiterJobsList";
+import EmpAvailabilityManager from "../../components/EmpAvailabilityManager";
+import AssignedInterviews from "../../components/AssignedInterviews";
 
 function RecruiterDashboard() {
   const [org, setOrg] = useState(null);
@@ -71,10 +73,16 @@ function RecruiterDashboard() {
         <div className="space-y-6">
           <RecruiterJobsList />
 
-          <div className="rounded-lg border border-dashed border-border p-6 text-center">
-            <Users size={22} className="mx-auto mb-2 text-text-muted" />
-            <p className="font-semibold mb-1">Candidates & Interviews</p>
-            <p className="text-text-muted text-sm">Coming soon</p>
+          <div className="rounded-xl border border-border bg-surface p-6">
+            <h3 className="text-sm font-semibold mb-4">
+              Mock Interview Availability
+            </h3>
+            <EmpAvailabilityManager />
+          </div>
+
+          <div className="rounded-xl border border-border bg-surface p-6">
+            <h3 className="text-sm font-semibold mb-4">Assigned Interviews</h3>
+            <AssignedInterviews />
           </div>
         </div>
       </div>

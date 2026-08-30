@@ -65,12 +65,26 @@ function Dashboard() {
             <ArrowLeft size={16} />
             Back to Home
           </Link>
-          <Link
-            to="/candidate/applications"
-            className="text-sm font-semibold text-primary hover:underline"
-          >
-            My Applications →
-          </Link>
+          <div className="flex items-center gap-4">
+            <Link
+              to="/candidate/my-bookings"
+              className="text-sm font-semibold text-primary hover:underline"
+            >
+              My Interviews →
+            </Link>
+            <Link
+              to="/candidate/book-interview"
+              className="text-sm font-semibold bg-primary hover:bg-primary-hover text-white px-3 py-1.5 rounded-md transition-colors"
+            >
+              Book Mock Interview
+            </Link>
+            <Link
+              to="/candidate/applications"
+              className="text-sm font-semibold text-primary hover:underline"
+            >
+              My Applications →
+            </Link>
+          </div>
         </div>
 
         <section className="rounded-2xl border border-border bg-surface px-5 py-6 md:px-8 md:py-7">

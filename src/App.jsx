@@ -23,6 +23,8 @@ import RecruiterDashboard from "./pages/recruiter/RecruiterDashboard";
 import InterviewerDashboard from "./pages/interviewer/InterviewerDashboard";
 import Jobs from "./pages/Jobs";
 import MyApplications from "./pages/candidate/MyApplications";
+import BookInterview from "./pages/candidate/BookInterview";
+import MyBookings from "./pages/candidate/MyBookings";
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -89,6 +91,22 @@ function App() {
           element={
             <ProtectedRoute allowedRoles={["CANDIDATE"]}>
               <MyApplications />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/candidate/book-interview"
+          element={
+            <ProtectedRoute allowedRoles={["CANDIDATE"]}>
+              <BookInterview />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/candidate/my-bookings"
+          element={
+            <ProtectedRoute allowedRoles={["CANDIDATE"]}>
+              <MyBookings />
             </ProtectedRoute>
           }
         />

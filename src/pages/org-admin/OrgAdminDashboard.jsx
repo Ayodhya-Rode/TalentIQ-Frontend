@@ -27,6 +27,7 @@ import {
 import TeamMemberFormModal from "../../components/TeamMemberFormModal";
 import TeamMembersList from "../../components/TeamMembersList";
 import PendingJobsQueue from "../../components/PendingJobsQueue";
+import AdminBookingQueues from "../../components/AdminBookingQueues";
 
 const statusStyles = {
   PENDING: "bg-warning/10 text-warning",
@@ -279,8 +280,16 @@ function OrgAdminDashboard() {
                   <TeamMembersList />
                 </div>
                 <div className="mt-6">
-                  <h3 className="text-sm font-semibold mb-3">Pending Job Approvals</h3>
+                  <h3 className="text-sm font-semibold mb-3">
+                    Pending Job Approvals
+                  </h3>
                   <PendingJobsQueue />
+                </div>
+                <div className="mt-6">
+                  <h3 className="text-sm font-semibold mb-3">
+                    Mock Interview Oversight
+                  </h3>
+                  <AdminBookingQueues />
                 </div>
               </div>
             )}
