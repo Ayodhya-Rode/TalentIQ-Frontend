@@ -11,3 +11,5 @@ export const getFlaggedEmps = () => api.get("/bookings/flagged-emps");
 
 export const createPaymentOrder = (bookingId) => api.post("/bookings/create-payment-order", { bookingId });
 export const verifyPayment = (data) => api.post("/bookings/verify-payment", data);
+
+export const getVideoToken = (bookingId) => api.get(`/bookings/${bookingId}/video-token`);

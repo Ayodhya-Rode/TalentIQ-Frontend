@@ -1,8 +1,12 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import api from "../../services/api";
-import { rescheduleBooking, getAvailableSlots } from "../../services/bookingService";
+import {
+  rescheduleBooking,
+  getAvailableSlots,
+} from "../../services/bookingService";
 import { ArrowLeft, Calendar } from "lucide-react";
+import JoinButton from "../../components/JoinButton";
 
 const statusStyles = {
   PENDING_PAYMENT: "bg-warning/10 text-warning",
@@ -60,12 +64,17 @@ function MyBookings() {
   return (
     <div className="min-h-screen bg-bg text-text px-6 py-10">
       <div className="max-w-2xl mx-auto">
-        <Link to="/candidate/dashboard" className="mb-4 inline-flex items-center gap-2 text-sm text-text-muted hover:text-text">
+        <Link
+          to="/candidate/dashboard"
+          className="mb-4 inline-flex items-center gap-2 text-sm text-text-muted hover:text-text"
+        >
           <ArrowLeft size={16} />
           Back to Dashboard
         </Link>
 
-        <h1 className="font-display text-2xl font-semibold mb-6">My mock interviews</h1>
+        <h1 className="font-display text-2xl font-semibold mb-6">
+          My mock interviews
+        </h1>
         {error && <p className="text-danger text-sm mb-4">{error}</p>}
 
         {bookings.length === 0 && (
@@ -80,13 +89,23 @@ function MyBookings() {
             <div key={b.id} className="border border-border rounded-lg p-4">
               <div className="flex items-start justify-between gap-3 mb-2">
                 <div>
-                  <p className="font-medium text-sm">{b.domain.replace("_", " ")} · {b.organization?.name}</p>
-                  <p className="text-xs text-text-muted">{new Date(b.scheduledDate).toLocaleString()}</p>
+                  <p className="font-medium text-sm">
+                    {b.domain.replace("_", " ")} · {b.organization?.name}
+                  </p>
+                  <p className="text-xs text-text-muted">
+                    {new Date(b.scheduledDate).toLocaleString()}
+                  </p>
                 </div>
-                <span className={`text-xs font-semibold px-2.5 py-1 rounded-full flex-shrink-0 ${statusStyles[b.status]}`}>
+                <span
+                  className={`text-xs font-semibold px-2.5 py-1 rounded-full flex-shrink-0 ${statusStyles[b.status]}`}
+                >
                   {b.status.replace("_", " ")}
                 </span>
               </div>
+
+              {b.status === "ASSIGNED" && b.videoRoomUrl && (
+                <JoinButton scheduledDate={b.scheduledDate} bookingId={b.id} />
+              )}
 
               {b.status === "NEEDS_ATTENTION" && reschedulingId !== b.id && (
                 <button
@@ -105,7 +124,13 @@ function MyBookings() {
                       onClick={() => handleReschedule(s)}
                       className="p-2 rounded border border-border hover:bg-primary/5 hover:border-primary text-xs text-left"
                     >
-                      {new Date(s).toLocaleString(undefined, { weekday: "short", month: "short", day: "numeric", hour: "numeric", minute: "2-digit" })}
+                      {new Date(s).toLocaleString(undefined, {
+                        weekday: "short",
+                        month: "short",
+                        day: "numeric",
+                        hour: "numeric",
+                        minute: "2-digit",
+                      })}
                     </button>
                   ))}
                 </div>

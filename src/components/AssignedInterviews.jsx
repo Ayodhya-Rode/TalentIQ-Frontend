@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import api from "../services/api";
 import { empCancelBooking } from "../services/bookingService";
 import { XCircle } from "lucide-react";
+import JoinButton from "./JoinButton";
 
 function AssignedInterviews() {
   const [bookings, setBookings] = useState([]);
@@ -26,7 +27,8 @@ function AssignedInterviews() {
   }, []);
 
   const handleCancel = async (id) => {
-    if (!window.confirm("Mark yourself unavailable for this interview?")) return;
+    if (!window.confirm("Mark yourself unavailable for this interview?"))
+      return;
     setCancelingId(id);
     try {
       await empCancelBooking(id);
@@ -43,22 +45,34 @@ function AssignedInterviews() {
   return (
     <div>
       {error && <p className="text-danger text-sm mb-3">{error}</p>}
-      {bookings.length === 0 && <p className="text-text-muted text-sm">No assigned interviews.</p>}
+      {bookings.length === 0 && (
+        <p className="text-text-muted text-sm">No assigned interviews.</p>
+      )}
       <div className="space-y-2">
         {bookings.map((b) => (
-          <div key={b.id} className="flex items-center justify-between border border-border rounded-lg px-4 py-3">
-            <div>
-              <p className="text-sm font-medium">{b.domain.replace("_", " ")} interview</p>
-              <p className="text-xs text-text-muted">{new Date(b.scheduledDate).toLocaleString()}</p>
+          <div key={b.id} className="border border-border rounded-lg px-4 py-3">
+            <div className="flex items-start justify-between gap-3">
+              <div>
+                <p className="text-sm font-medium">
+                  {b.domain.replace("_", " ")} interview
+                </p>
+                <p className="text-xs text-text-muted">
+                  {new Date(b.scheduledDate).toLocaleString()}
+                </p>
+              </div>
+              <button
+                onClick={() => handleCancel(b.id)}
+                disabled={cancelingId === b.id}
+                className="inline-flex items-center gap-1 text-xs border border-danger/20 text-danger px-2.5 py-1.5 rounded-md hover:bg-danger/5 disabled:opacity-50 flex-shrink-0"
+              >
+                <XCircle size={12} />
+                Can't make it
+              </button>
             </div>
-            <button
-              onClick={() => handleCancel(b.id)}
-              disabled={cancelingId === b.id}
-              className="inline-flex items-center gap-1 text-xs border border-danger/20 text-danger px-2.5 py-1.5 rounded-md hover:bg-danger/5 disabled:opacity-50"
-            >
-              <XCircle size={12} />
-              Can't make it
-            </button>
+
+            {b.status === "ASSIGNED" && b.videoRoomUrl && (
+              <JoinButton scheduledDate={b.scheduledDate} bookingId={b.id} />
+            )}
           </div>
         ))}
       </div>

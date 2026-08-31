@@ -25,6 +25,7 @@ import Jobs from "./pages/Jobs";
 import MyApplications from "./pages/candidate/MyApplications";
 import BookInterview from "./pages/candidate/BookInterview";
 import MyBookings from "./pages/candidate/MyBookings";
+import InterviewRoom from "./pages/InterviewRoom";
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -176,6 +177,15 @@ function App() {
             </ProtectedRoute>
           }
         />
+
+        <Route
+  path="/interview/:bookingId"
+  element={
+    <ProtectedRoute allowedRoles={["CANDIDATE", "RECRUITER", "INTERVIEWER"]}>
+      <InterviewRoom />
+    </ProtectedRoute>
+  }
+/>
       </Routes>
       {showNavAndFooter && <Footer />}
     </div>
