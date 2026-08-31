@@ -6,31 +6,31 @@
   --font-body: "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "IBM Plex Mono", ui-monospace, monospace;
 
-  --color-bg: #F7F8FA;
-  --color-surface: #FFFFFF;
-  --color-text: #161B22;
-  --color-text-muted: #5B6472;
-  --color-border: #E2E5EA;
-  --color-primary: #2B4C7E;
-  --color-primary-hover: #213A61;
-  --color-accent: #DD8B3F;
-  --color-success: #2F855A;
-  --color-warning: #B7791F;
-  --color-danger: #C0362C;
+  --color-bg: #f7f8fa;
+  --color-surface: #ffffff;
+  --color-text: #161b22;
+  --color-text-muted: #5b6472;
+  --color-border: #e2e5ea;
+  --color-primary: #2b4c7e;
+  --color-primary-hover: #213a61;
+  --color-accent: #dd8b3f;
+  --color-success: #2f855a;
+  --color-warning: #b7791f;
+  --color-danger: #c0362c;
 }
 
 .dark {
-  --color-bg: #0F1417;
-  --color-surface: #171D21;
-  --color-text: #E6E9EC;
-  --color-text-muted: #8B94A0;
-  --color-border: #262E33;
-  --color-primary: #5C86B8;
-  --color-primary-hover: #7099C6;
-  --color-accent: #E4A05C;
-  --color-success: #4CAF7D;
-  --color-warning: #D9A441;
-  --color-danger: #E0685C;
+  --color-bg: #0f1417;
+  --color-surface: #171d21;
+  --color-text: #e6e9ec;
+  --color-text-muted: #8b94a0;
+  --color-border: #262e33;
+  --color-primary: #5c86b8;
+  --color-primary-hover: #7099c6;
+  --color-accent: #e4a05c;
+  --color-success: #4caf7d;
+  --color-warning: #d9a441;
+  --color-danger: #e0685c;
 }
 
 body {
@@ -39,12 +39,27 @@ body {
   color: var(--color-text);
 }
 
-.font-display { font-family: var(--font-display); }
-.font-mono { font-family: var(--font-mono); }
+.font-display {
+  font-family: var(--font-display);
+}
+.font-mono {
+  font-family: var(--font-mono);
+}
 
+/* Hide the browser's built-in password reveal/clear icon (Edge injects one
+   automatically on type="password" inputs) so only our custom Eye/EyeOff
+   button in Login.jsx shows. */
 
+input[type="password"]::-ms-reveal,
+input[type="password"]::-ms-clear {
+  display: none;
+}
 
 @keyframes pipeline-shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
 }
