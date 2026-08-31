@@ -7,7 +7,9 @@ import {
   createPaymentOrder,
   verifyPayment,
 } from "../../services/bookingService";
+import api from "../../services/api";
 import { ArrowLeft, Building2 } from "lucide-react";
+import toast from "react-hot-toast";
 
 const DOMAINS = [
   "FULL_STACK",
@@ -74,7 +76,15 @@ function BookInterview() {
           navigate("/candidate/my-bookings");
         },
         modal: {
-          ondismiss: () => setBooking(false),
+          ondismiss: async () => {
+            try {
+              await api.patch(`/bookings/${bookingId}/cancel-pending`);
+            } catch {
+              // best-effort cleanup, ignore failure
+            }
+            setBooking(false);
+            toast("Payment cancelled. No charges made.");
+          },
         },
       });
       rzp.open();

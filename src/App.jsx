@@ -26,6 +26,7 @@ import MyApplications from "./pages/candidate/MyApplications";
 import BookInterview from "./pages/candidate/BookInterview";
 import MyBookings from "./pages/candidate/MyBookings";
 import InterviewRoom from "./pages/InterviewRoom";
+import { Toaster } from "react-hot-toast";
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -42,6 +43,7 @@ const NO_NAV_FOOTER_ROUTES = [
   "/org-admin",
   "/recruiter",
   "/interviewer",
+  "/interview",
 ];
 
 function useShowNavAndFooter() {
@@ -65,6 +67,7 @@ function App() {
       <ScrollToTop />
       {showNavAndFooter && <Navbar dark={dark} setDark={setDark} />}
 
+      <Toaster position="top-center" />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/register" element={<Register />} />
@@ -179,13 +182,15 @@ function App() {
         />
 
         <Route
-  path="/interview/:bookingId"
-  element={
-    <ProtectedRoute allowedRoles={["CANDIDATE", "RECRUITER", "INTERVIEWER"]}>
-      <InterviewRoom />
-    </ProtectedRoute>
-  }
-/>
+          path="/interview/:bookingId"
+          element={
+            <ProtectedRoute
+              allowedRoles={["CANDIDATE", "RECRUITER", "INTERVIEWER"]}
+            >
+              <InterviewRoom />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
       {showNavAndFooter && <Footer />}
     </div>
