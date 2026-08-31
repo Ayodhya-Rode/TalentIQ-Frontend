@@ -8,3 +8,6 @@ export const empCancelBooking = (id) => api.patch(`/bookings/${id}/emp-cancel`);
 export const rescheduleBooking = (id, scheduledDate) => api.patch(`/bookings/${id}/reschedule`, { scheduledDate });
 export const getBookingsNeedingAttention = () => api.get("/bookings/needs-attention");
 export const getFlaggedEmps = () => api.get("/bookings/flagged-emps");
+
+export const createPaymentOrder = (bookingId) => api.post("/bookings/create-payment-order", { bookingId });
+export const verifyPayment = (data) => api.post("/bookings/verify-payment", data);
