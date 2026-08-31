@@ -2,15 +2,22 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { getMyMembership } from "../../services/teamMemberService";
 import { useAuth } from "../../context/AuthContext";
-import { Building2, LogOut, Users } from "lucide-react";
+import { Building2, LogOut, Briefcase, CalendarClock, ClipboardList } from "lucide-react";
 import RecruiterJobsList from "../../components/RecruiterJobsList";
 import EmpAvailabilityManager from "../../components/EmpAvailabilityManager";
 import AssignedInterviews from "../../components/AssignedInterviews";
+
+const TABS = [
+  { id: "jobs", label: "Jobs", icon: Briefcase },
+  { id: "availability", label: "Availability", icon: CalendarClock },
+  { id: "assigned", label: "Assigned Interviews", icon: ClipboardList },
+];
 
 function RecruiterDashboard() {
   const [org, setOrg] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [activeTab, setActiveTab] = useState("jobs");
   const navigate = useNavigate();
   const { user, logout } = useAuth();
 
@@ -70,21 +77,47 @@ function RecruiterDashboard() {
           </div>
         )}
 
-        <div className="space-y-6">
-          <RecruiterJobsList />
+        {/* Tab bar */}
+        <div className="flex gap-1 border-b border-border mb-6">
+          {TABS.map((tab) => {
+            const Icon = tab.icon;
+            const active = activeTab === tab.id;
+            return (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                className={`inline-flex items-center gap-2 px-4 py-2.5 text-sm font-medium border-b-2 -mb-px transition-colors ${
+                  active
+                    ? "border-primary text-primary"
+                    : "border-transparent text-text-muted hover:text-text"
+                }`}
+              >
+                <Icon size={16} />
+                {tab.label}
+              </button>
+            );
+          })}
+        </div>
 
+        {/* Tab content — only the active section is mounted, so switching
+            tabs doesn't require scrolling past the others */}
+        {activeTab === "jobs" && <RecruiterJobsList />}
+
+        {activeTab === "availability" && (
           <div className="rounded-xl border border-border bg-surface p-6">
             <h3 className="text-sm font-semibold mb-4">
               Mock Interview Availability
             </h3>
             <EmpAvailabilityManager />
           </div>
+        )}
 
+        {activeTab === "assigned" && (
           <div className="rounded-xl border border-border bg-surface p-6">
             <h3 className="text-sm font-semibold mb-4">Assigned Interviews</h3>
             <AssignedInterviews />
           </div>
-        </div>
+        )}
       </div>
     </div>
   );
