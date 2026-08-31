@@ -1,27 +1,46 @@
-import { createContext, useContext, useState, useEffect } from "react";
-import api from "../services/api";
-import { setAccessTokenGetter } from "../services/api";
+import { createContext, useContext, useState, useEffect, useRef } from "react";
+import api, { registerAuthHandlers } from "../services/api";
 
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [accessToken, setAccessToken] = useState(null);
+  const [accessToken, setAccessTokenState] = useState(null);
   const [loading, setLoading] = useState(true);
+
+  // The response interceptor in api.js runs outside React, so it needs a
+  // way to read the *current* token synchronously and to update it/log the
+  // user out without waiting on a re-render.
+  const tokenRef = useRef(null);
+
+  const setToken = (token) => {
+    tokenRef.current = token;
+    setAccessTokenState(token);
+  };
+
+  useEffect(() => {
+    registerAuthHandlers({
+      getToken: () => tokenRef.current,
+      setToken,
+      onLogout: () => {
+        tokenRef.current = null;
+        setAccessTokenState(null);
+        setUser(null);
+      },
+    });
+  }, []);
 
   useEffect(() => {
     const tryRefresh = async () => {
       try {
         const res = await api.post("/auth/refresh-token");
         const token = res.data.data.accessToken;
-        setAccessToken(token);
+        setToken(token);
 
-        const meRes = await api.get("/auth/me", {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        const meRes = await api.get("/auth/me");
         setUser(meRes.data.data.user);
       } catch {
-        setAccessToken(null);
+        setToken(null);
         setUser(null);
       } finally {
         setLoading(false);
@@ -30,18 +49,14 @@ export const AuthProvider = ({ children }) => {
     tryRefresh();
   }, []);
 
-  useEffect(() => {
-    setAccessTokenGetter(() => accessToken);
-  }, [accessToken]);
-
   const login = (token, userData) => {
-    setAccessToken(token);
+    setToken(token);
     setUser(userData);
   };
 
   const logout = async () => {
     await api.post("/auth/logout").catch(() => {});
-    setAccessToken(null);
+    setToken(null);
     setUser(null);
   };
 
