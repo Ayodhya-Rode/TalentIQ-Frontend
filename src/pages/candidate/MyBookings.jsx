@@ -7,6 +7,7 @@ import {
 } from "../../services/bookingService";
 import { ArrowLeft, Calendar } from "lucide-react";
 import JoinButton from "../../components/JoinButton";
+import FeedbackDisplay from "../../components/FeedbackDisplay";
 
 const statusStyles = {
   PENDING_PAYMENT: "bg-warning/10 text-warning",
@@ -135,6 +136,7 @@ function MyBookings() {
                   ))}
                 </div>
               )}
+              {b.status === "COMPLETED" && <FeedbackDisplay bookingId={b.id} />}
             </div>
           ))}
         </div>

@@ -3,12 +3,14 @@ import api from "../services/api";
 import { empCancelBooking } from "../services/bookingService";
 import { XCircle } from "lucide-react";
 import JoinButton from "./JoinButton";
+import FeedbackForm from "./FeedbackForm";
 
 function AssignedInterviews() {
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [cancelingId, setCancelingId] = useState(null);
+  const [feedbackDoneIds, setFeedbackDoneIds] = useState([]);
 
   const fetchBookings = async () => {
     setLoading(true);
@@ -72,6 +74,19 @@ function AssignedInterviews() {
 
             {b.status === "ASSIGNED" && b.videoRoomUrl && (
               <JoinButton scheduledDate={b.scheduledDate} bookingId={b.id} />
+            )}
+            {b.status === "ASSIGNED" &&
+              new Date(b.scheduledDate) < new Date() &&
+              !feedbackDoneIds.includes(b.id) && (
+                <FeedbackForm
+                  bookingId={b.id}
+                  onSubmitted={() =>
+                    setFeedbackDoneIds((prev) => [...prev, b.id])
+                  }
+                />
+              )}
+            {feedbackDoneIds.includes(b.id) && (
+              <p className="text-xs text-success mt-2">Feedback submitted.</p>
             )}
           </div>
         ))}
